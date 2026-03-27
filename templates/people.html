@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AnimeOn | Industry People
+{% endblock %}
+
+{% block content %}
+
+<main class="min-h-screen bg-slate-50 text-slate-800 p-8 md:p-12">
+
+    <header class="max-w-4xl mx-auto mb-12">
+        <h1 class="text-4xl font-black text-slate-900 tracking-tight">Creators & Cast</h1>
+        <p class="text-slate-500 font-medium mt-2">The talent behind your favorite stories.</p>
+    </header>
+
+    <div class="max-w-4xl mx-auto space-y-10">
+
+        {% for people in peoples %}
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 flex flex-col md:flex-row gap-10 transition-all duration-300 hover:shadow-xl group">
+
+            <div class="flex-shrink-0 mx-auto md:mx-0">
+                <div class="relative">
+                    <img src="{{ people['images']['jpg']['image_url'] }}"
+                         alt="{{ people['name'] }}"
+                         class="w-56 h-72 object-cover rounded-2xl shadow-md border-4 border-white ring-1 ring-slate-100 group-hover:scale-[1.02] transition-transform duration-500">
+                    
+                    <div class="absolute -bottom-3 -right-3 bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-black shadow-lg">
+                        Favorites: {{ people['favorites'] }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 space-y-5">
+
+                <div>
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight leading-none mb-2">
+                        {{ people['name'] }}
+                    </h2>
+                    <p class="text-indigo-500 font-bold text-sm">
+                        {{ people['family_name'] }} {{ people['given_name'] }}
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 border-y border-slate-100">
+                    <div>
+                        <span class="block text-[10px] uppercase tracking-widest font-black text-slate-400">Birthday</span>
+                        <span class="text-sm font-semibold text-slate-700">{{ people['birthday'][:10] if people['birthday'] else 'Unknown' }}</span>
+                    </div>
+                    {% if people['alternate_names'] %}
+                    <div>
+                        <span class="block text-[10px] uppercase tracking-widest font-black text-slate-400">Also Known As</span>
+                        <span class="text-sm font-semibold text-slate-700">{{ people['alternate_names'] | join(', ') }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h3 class="text-[10px] uppercase tracking-widest font-black text-slate-400 mb-2">Biography</h3>
+                    <div class="text-sm text-slate-600 leading-relaxed max-h-40 overflow-y-auto pr-4 custom-people-scroll whitespace-pre-line">
+                        {{ people['about'] }}
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <a href="{{ people['url'] }}" target="_blank"
+                       class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-bold text-sm transition-colors">
+                        View Official Profile
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</main>
+
+<style>
+    /* Profile specific scrollbar */
+    .custom-people-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-people-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-people-scroll::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+    .custom-people-scroll::-webkit-scrollbar-thumb:hover {
+        background: #cbd5e1;
+    }
+</style>
+
+{% endblock %}

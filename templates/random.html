@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AnimeOn | Random Generator
+{% endblock %}
+
+{% block content %}
+
+<main class="min-h-screen bg-slate-50 text-slate-800 flex flex-col items-center p-8">
+
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-2">Discover New Things</h1>
+        <p class="text-slate-500 font-medium">Select a category to find something new</p>
+    </div>
+
+    <form method="POST" class="w-full max-w-3xl">
+        <input type="hidden" name="random_option" id="random_option">
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div onclick="selectOption('anime', this)"
+                 class="option-card bg-white border-2 border-slate-200 p-5 rounded-2xl text-center cursor-pointer font-bold text-slate-600 transition-all duration-200 hover:border-indigo-400 hover:shadow-md">
+                Anime
+            </div>
+
+            <div onclick="selectOption('characters', this)"
+                 class="option-card bg-white border-2 border-slate-200 p-5 rounded-2xl text-center cursor-pointer font-bold text-slate-600 transition-all duration-200 hover:border-indigo-400 hover:shadow-md">
+                Characters
+            </div>
+
+            <div onclick="selectOption('manga', this)"
+                 class="option-card bg-white border-2 border-slate-200 p-5 rounded-2xl text-center cursor-pointer font-bold text-slate-600 transition-all duration-200 hover:border-indigo-400 hover:shadow-md">
+                Manga
+            </div>
+
+            <div onclick="selectOption('people', this)"
+                 class="option-card bg-white border-2 border-slate-200 p-5 rounded-2xl text-center cursor-pointer font-bold text-slate-600 transition-all duration-200 hover:border-indigo-400 hover:shadow-md">
+                People
+            </div>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-slate-900 hover:bg-indigo-600 text-white py-4 rounded-2xl font-black tracking-widest uppercase text-sm transition-all shadow-lg active:scale-95">
+            Generate Random Result
+        </button>
+    </form>
+
+    {% if random %}
+    <div class="mt-12 bg-white border border-slate-200 p-8 rounded-3xl w-full max-w-3xl shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        <div class="flex flex-col md:flex-row gap-8">
+            {% if random.get('images') %}
+            <div class="shrink-0">
+                <img src="{{ random['images']['jpg']['image_url'] }}"
+                     alt="Result cover"
+                     class="w-full md:w-56 rounded-2xl shadow-md border border-slate-100 object-cover">
+            </div>
+            {% endif %}
+
+            <div class="flex-1">
+                <h2 class="text-3xl font-black text-slate-900 mb-4 leading-tight">
+                    {{ random.get('title') or random.get('name') }}
+                </h2>
+
+                <div class="grid grid-cols-2 gap-4 text-xs mb-6">
+                    {% if random.get('type') %}
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase tracking-tighter">Type</span>
+                        <span class="text-slate-700 font-semibold">{{ random['type'] }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if random.get('score') %}
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase tracking-tighter">Rating</span>
+                        <span class="text-indigo-600 font-black">Score: {{ random['score'] }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if random.get('episodes') %}
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase tracking-tighter">Episodes</span>
+                        <span class="text-slate-700 font-semibold">{{ random['episodes'] }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if random.get('chapters') %}
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase tracking-tighter">Chapters</span>
+                        <span class="text-slate-700 font-semibold">{{ random['chapters'] }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <p class="text-slate-600 text-sm leading-relaxed line-clamp-6">
+                    {{ random.get('synopsis') or random.get('about') }}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</main>
+
+<script>
+function selectOption(value, element) {
+    // Update hidden field
+    document.getElementById('random_option').value = value;
+
+    // Reset styles for all cards
+    document.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('border-indigo-600', 'bg-indigo-50', 'text-indigo-600', 'shadow-inner');
+        card.classList.add('border-slate-200', 'bg-white', 'text-slate-600');
+    });
+
+    // Apply active styles to clicked card
+    element.classList.remove('border-slate-200', 'bg-white', 'text-slate-600');
+    element.classList.add('border-indigo-600', 'bg-indigo-50', 'text-indigo-600', 'shadow-inner');
+}
+</script>
+
+{% endblock %}
